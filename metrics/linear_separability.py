@@ -115,7 +115,7 @@ class LS(metric_base.MetricBase):
         # Construct TensorFlow graph for each GPU.
         result_expr = []
         for gpu_idx in range(num_gpus):
-            with tf.device('/gpu:%d' % gpu_idx):
+            with tf.device(f"/{'gpu' if tf.test.is_gpu_available(True) else 'dml'}:{gpu_idx}"):
                 Gs_clone = Gs.clone()
 
                 # Generate images.

@@ -30,7 +30,7 @@ class IS(metric_base.MetricBase):
         # Construct TensorFlow graph.
         result_expr = []
         for gpu_idx in range(num_gpus):
-            with tf.device('/gpu:%d' % gpu_idx):
+            with tf.device(f"/{'gpu' if tf.test.is_gpu_available(True) else 'dml'}:{gpu_idx}"):
                 Gs_clone = Gs.clone()
                 inception_clone = inception.clone()
                 latents = tf.random_normal([self.minibatch_per_gpu] + Gs_clone.input_shape[1:])

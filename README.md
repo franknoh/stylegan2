@@ -34,22 +34,16 @@ For business inquiries, please visit our website and submit the form: [NVIDIA Re
 ## Requirements
 
 * Both Linux and Windows are supported. Linux is recommended for performance and compatibility reasons.
-* 64-bit Python 3.6 installation. We recommend Anaconda3 with numpy 1.14.3 or newer.
-* We recommend TensorFlow 1.14, which we used for all experiments in the paper, but TensorFlow 1.15 is also supported on Linux. TensorFlow 2.x is not supported.
-* On Windows you need to use TensorFlow 1.14, as the standard 1.15 installation does not include necessary C++ headers.
-* One or more high-end NVIDIA GPUs, NVIDIA drivers, CUDA 10.0 toolkit and cuDNN 7.5. To reproduce the results reported in the paper, you need an NVIDIA GPU with at least 16 GB of DRAM.
+* 64-bit Python 3.7 installation. We recommend Anaconda3 with numpy 1.14.3 or newer.
 * Docker users: use the [provided Dockerfile](./Dockerfile) to build an image with the required library dependencies.
 
-StyleGAN2 relies on custom TensorFlow ops that are compiled on the fly using [NVCC](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html). To test that your NVCC installation is working correctly, run:
-
-```.bash
-nvcc test_nvcc.cu -o test_nvcc -run
-| CPU says hello.
-| GPU says hello.
+```bash
+pip install tensorflow-directml
+pip install scipy==1.3.3
+pip install requests==2.22.0
+pip install Pillow==6.2.1
+pip install tqdm
 ```
-
-On Windows, the compilation requires Microsoft Visual Studio to be in `PATH`. We recommend installing [Visual Studio Community Edition](https://visualstudio.microsoft.com/vs/) and adding into `PATH` using `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"`.
-
 ## Using pre-trained networks
 
 Pre-trained networks are stored as `*.pkl` files on the [StyleGAN2 Google Drive folder](https://drive.google.com/open?id=1QHc-yF5C3DChRwSdZKcx1w6K8JvSxQi7). Below, you can either reference them directly using the syntax `gdrive:networks/<filename>.pkl`, or download them manually and reference by filename.

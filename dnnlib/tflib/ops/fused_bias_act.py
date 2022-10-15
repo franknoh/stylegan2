@@ -29,9 +29,11 @@ activation_funcs = {
     'swish':    EasyDict(func=lambda x, **_:        tf.nn.sigmoid(x) * x,       def_alpha=None, def_gain=np.sqrt(2),    cuda_idx=9, ref='x', zero_2nd_grad=False),
 }
 
+ref_type = 'cuda' if tf.test.is_gpu_available(True) else 'ref'
+
 #----------------------------------------------------------------------------
 
-def fused_bias_act(x, b=None, axis=1, act='linear', alpha=None, gain=None, impl='cuda'):
+def fused_bias_act(x, b=None, axis=1, act='linear', alpha=None, gain=None, impl=ref_type):
     r"""Fused bias and activation function.
 
     Adds bias `b` to activation tensor `x`, evaluates activation function `act`,

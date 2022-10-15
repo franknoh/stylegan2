@@ -143,7 +143,7 @@ def training_loop(
     misc.save_image_grid(grid_reals, dnnlib.make_run_dir_path('reals.png'), drange=training_set.dynamic_range, grid_size=grid_size)
 
     # Construct or load networks.
-    with tf.device('/gpu:0'):
+    with tf.device(f"/{'gpu' if tf.test.is_gpu_available(True) else 'dml'}:0"):
         if resume_pkl is None or resume_with_new_nets:
             print('Constructing networks...')
             G = tflib.Network('G', num_channels=training_set.shape[0], resolution=training_set.shape[1], label_size=training_set.label_size, **G_args)
@@ -191,7 +191,7 @@ def training_loop(
     # Build training graph for each GPU.
     data_fetch_ops = []
     for gpu in range(num_gpus):
-        with tf.name_scope('GPU%d' % gpu), tf.device('/gpu:%d' % gpu):
+        with tf.name_scope(f"{'GPU' if tf.test.is_gpu_available(True) else 'DML'}{gpu}"), tf.device(f"/{'gpu' if tf.test.is_gpu_available(True) else 'dml'}:{gpu}"):
 
             # Create GPU-specific shadow copies of G and D.
             G_gpu = G if gpu == 0 else G.clone(G.name + '_shadow')
@@ -240,7 +240,7 @@ def training_loop(
     Gs_update_op = Gs.setup_as_moving_average_of(G, beta=Gs_beta)
 
     # Finalize graph.
-    with tf.device('/gpu:0'):
+    with tf.device(f"/{'gpu' if tf.test.is_gpu_available(True) else 'dml'}:0"):
         try:
             peak_gpu_mem_op = tf.contrib.memory_stats.MaxBytesInUse()
         except tf.errors.NotFoundError:
