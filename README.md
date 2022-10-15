@@ -42,7 +42,6 @@ pip install tensorflow-directml
 pip install scipy==1.3.3
 pip install requests==2.22.0
 pip install Pillow==6.2.1
-pip install tqdm
 ```
 ## Using pre-trained networks
 
